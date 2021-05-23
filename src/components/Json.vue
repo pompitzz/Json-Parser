@@ -12,10 +12,11 @@
     <div v-if="empty">
 
     </div>
-    <component
-      v-else
-      :is="findJsonComponent(json)"
-    />
+    <div v-else>
+      <component
+        :is="findJsonComponent(json)"
+      />
+    </div>
   </div>
 </template>
 
@@ -24,13 +25,14 @@
 import { computed, defineComponent, ref, toRefs, watch } from 'vue';
 import { findJsonComponent } from '@/composable/JsonComponentFinder.js';
 import { parseJson } from '@/composable/JsonParser.js';
+import { copy } from '@/composable/Copy.js';
 
 export default defineComponent({
   name: 'Json',
   props: {
     input: String,
   },
-  setup(props) {
+  setup(props, { emit }) {
     const { input } = toRefs(props);
     const json = ref();
     const failMessage = ref('');
@@ -39,6 +41,7 @@ export default defineComponent({
       try {
         failMessage.value = '';
         json.value = newInput ? parseJson(newInput) : null;
+        emit('successParse', json.value);
       } catch (e) {
         failMessage.value = e.stack;
       }
@@ -48,6 +51,7 @@ export default defineComponent({
       json,
       failMessage,
       empty,
+      copy: () => copy(JSON.stringify(json.value)),
     };
   },
 })

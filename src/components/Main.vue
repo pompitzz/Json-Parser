@@ -1,12 +1,23 @@
 <template>
   <div class="h-full flex flex-col p-4">
     <div class="header">
-      <button
-        class="bg-blue-500 rounded text-white p-2"
-        @click="setSample"
-      >
-        Sample
-      </button>
+      <div>
+        <button
+          class="btn-filled-primary"
+          @click="setSample"
+        >
+          Sample
+        </button>
+      </div>
+      <div class="flex-1" />
+      <div>
+        <button
+          class="btn-filled-danger"
+          @click="copy"
+        >
+          Copy
+        </button>
+      </div>
     </div>
     <div class="main">
       <textarea
@@ -16,6 +27,7 @@
       <Json
         class="json"
         :input="input"
+        @successParse="successParse"
       />
     </div>
   </div>
@@ -26,6 +38,7 @@ import { computed, defineComponent, onMounted, ref } from 'vue';
 import Json from '@/components/Json.vue';
 import { parseJson } from '@/composable/JsonParser.js';
 import { sampleJson } from '@/composable/SampleJson.js';
+import { copy } from '@/composable/Copy.js';
 
 export default defineComponent({
   name: 'HelloWorld',
@@ -35,12 +48,17 @@ export default defineComponent({
     const value = computed(() => {
       return parseJson(input.value);
     });
+
+    const jsonString = ref('');
+    const successParse = (json) => (jsonString.value = JSON.stringify(json));
     const setSample = () => (input.value = sampleJson);
     onMounted(setSample);
     return {
       input,
       value,
       setSample,
+      successParse,
+      copy: () => copy(jsonString.value),
     };
   },
 });
@@ -52,6 +70,7 @@ export default defineComponent({
 >
 .header {
   height: 40px;
+  display: flex;
 }
 
 .main {
