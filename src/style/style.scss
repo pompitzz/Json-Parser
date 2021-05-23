@@ -1,0 +1,9 @@
+.json {
+    .object-properties, .array-values {
+        > li:not(:last-child) {
+            > .value::after {
+                content: ",";
+            }
+        }
+    }
+}

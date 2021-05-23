@@ -1,5 +1,5 @@
 <template>
-  <span>{{ value }}</span>
+  <span class="string">"{{ value }}"</span>
 </template>
 
 <script>
@@ -7,12 +7,10 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'BooleanJson',
+  name: 'StringJson',
   props: {
-    value: {
-      type: Boolean,
-    },
-  },
+    value: String,
+  }
 });
 </script>
 

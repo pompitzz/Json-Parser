@@ -8,16 +8,16 @@ export function parseJson(jsonString) {
 }
 
 function parseInternalForArray(jsonArray) {
-    return jsonArray.map(someWork);
+    return jsonArray.map(parseInternal);
 }
 
 function parseInternalForObj(json) {
     const obj = {};
-    Object.entries(json).forEach(([key, value]) => obj[key] = someWork(value));
+    Object.entries(json).forEach(([key, value]) => obj[key] = parseInternal(value));
     return obj;
 }
 
-function someWork(value) {
+function parseInternal(value) {
     if (typeof value === 'string') {
         try {
             return parseJson(value);

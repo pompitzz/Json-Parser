@@ -1,21 +1,29 @@
 <template>
   <div
-      v-if="failMessage"
-      class="fail"
+    v-if="failMessage"
+    class="fail"
   >
     {{ failMessage }}
   </div>
-  <component
+  <div
+    v-else
+    class="json"
+  >
+    <div v-if="empty">
+
+    </div>
+    <component
       v-else
       :is="findJsonComponent(json)"
-  />
+    />
+  </div>
 </template>
 
 <script>
 
-import { defineComponent, toRefs, watch, ref } from 'vue';
-import { findJsonComponent } from '@/components/JsonComponentFinder.js';
-import { parseJson } from '@/components/JsonParser.js';
+import { computed, defineComponent, ref, toRefs, watch } from 'vue';
+import { findJsonComponent } from '@/composable/JsonComponentFinder.js';
+import { parseJson } from '@/composable/JsonParser.js';
 
 export default defineComponent({
   name: 'Json',
@@ -26,10 +34,11 @@ export default defineComponent({
     const { input } = toRefs(props);
     const json = ref();
     const failMessage = ref('');
+    const empty = computed(() => (!json.value));
     watch(input, newInput => {
       try {
-        json.value = parseJson(newInput);
         failMessage.value = '';
+        json.value = parseJson(newInput);
       } catch (e) {
         failMessage.value = e.stack;
       }
@@ -38,6 +47,7 @@ export default defineComponent({
       findJsonComponent,
       json,
       failMessage,
+      empty,
     };
   },
 })

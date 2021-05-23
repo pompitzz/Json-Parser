@@ -1,5 +1,5 @@
 <template>
-  <span>"{{ value }}"</span>
+  <span class="null">null</span>
 </template>
 
 <script>
@@ -7,10 +7,7 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'StringJson',
-  props: {
-    value: String,
-  }
+  name: 'NullJson',
 });
 </script>
 

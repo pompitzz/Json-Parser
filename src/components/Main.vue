@@ -15,12 +15,11 @@
 <script>
 import { computed, defineComponent, ref } from 'vue';
 import Json from '@/components/Json.vue';
-import { parseJson } from '@/components/JsonParser.js';
+import { parseJson } from '@/composable/JsonParser.js';
 
 export default defineComponent({
   name: 'HelloWorld',
   components: { Json },
-  // components: { Json },
   setup() {
     const input = ref('');
 
