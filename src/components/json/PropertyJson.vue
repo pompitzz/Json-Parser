@@ -17,5 +17,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
+.property {
+  @apply text-indigo-500;
+}
 </style>

@@ -15,5 +15,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
+.string {
+  @apply text-green-500;
+}
 </style>

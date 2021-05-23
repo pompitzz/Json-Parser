@@ -1,3 +1,8 @@
+html, body, #app {
+    font-size: 14px;
+    height: 100%;
+}
+
 .json {
     .object-properties, .array-values {
         > li:not(:last-child) {

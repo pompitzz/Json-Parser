@@ -17,5 +17,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
+.boolean {
+  @apply text-yellow-700;
+}
 </style>

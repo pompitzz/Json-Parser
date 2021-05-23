@@ -12,5 +12,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
+.null {
+  @apply text-gray-400;
+}
 </style>

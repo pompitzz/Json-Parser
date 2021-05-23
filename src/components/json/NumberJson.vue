@@ -15,5 +15,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
+.number {
+  @apply text-yellow-500;
+}
 </style>

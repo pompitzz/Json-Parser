@@ -2,9 +2,11 @@
   <span class="array">
     <span class="array-open">
       [
-      <br />
     </span>
-    <ul class="pl-4 array-values">
+    <ul
+      v-if="!empty"
+      class="pl-4 array-values"
+    >
       <li
         v-for="(value, index) in array"
         :key="index"
@@ -35,11 +37,19 @@ export default defineComponent({
     const array = ref(props.value);
     return {
       array,
+      empty: array.value.length === 0,
     };
   },
 });
 </script>
 
-<style scoped>
-
+<style
+  scoped
+  lang="scss"
+>
+.array {
+  .array-open, .array-close {
+    @apply text-red-500;
+  }
+}
 </style>

@@ -38,7 +38,7 @@ export default defineComponent({
     watch(input, newInput => {
       try {
         failMessage.value = '';
-        json.value = parseJson(newInput);
+        json.value = newInput ? parseJson(newInput) : null;
       } catch (e) {
         failMessage.value = e.stack;
       }

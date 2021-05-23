@@ -1,7 +1,9 @@
 <template>
   <span class="object">
     <span>
-      <span class="object-open">{</span>
+      <span class="object-open">
+        {
+      </span>
       <ul
         v-if="!isEmpty"
         class="pl-4 object-properties"
@@ -14,7 +16,9 @@
           <ValueJson :value="value" />
         </li>
       </ul>
-      <span class="object-close">}</span>
+      <span class="object-close">
+        }
+      </span>
     </span>
   </span>
 </template>
@@ -41,6 +45,13 @@ export default defineComponent({
 });
 </script>
 
-<style scoped>
-
+<style
+  scoped
+  lang="scss"
+>
+.object {
+  .object-open, .object-close {
+    @apply text-indigo-500;
+  }
+}
 </style>
