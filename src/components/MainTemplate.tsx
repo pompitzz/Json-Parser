@@ -1,20 +1,15 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles, Theme } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+import { Link, Route, RouteComponentProps, Switch, withRouter } from 'react-router-dom';
+import { RouteContext } from '../App';
+import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 
 const drawerWidth = 240;
 
@@ -67,6 +62,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
   },
   toolbar: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: theme.spacing(0, 1),
     ...theme.mixins.toolbar,
   },
   content: {
@@ -74,7 +73,15 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export default function MiniDrawer() {
+interface MainTemplateProps extends RouteComponentProps {
+  routeContexts: RouteContext[]
+}
+
+function MainTemplate({ routeContexts, location }: MainTemplateProps) {
+  const currentRouteContext = useMemo(
+    () => routeContexts.find(({ path }) => path === location.pathname),
+    [routeContexts, location]
+  );
   const classes = useStyles();
   const [open, setOpen] = useState(true);
 
@@ -108,7 +115,7 @@ export default function MiniDrawer() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            TBD
+            TBD {currentRouteContext && `| ${currentRouteContext.text}`}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -132,18 +139,24 @@ export default function MiniDrawer() {
         </div>
         <Divider />
         <List>
-          {['Temp'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
+          {routeContexts.map((context: RouteContext) => (
+            <ListItem button key={context.path} component={Link} to={context.path}>
+              <ListItemIcon>{context.icon}</ListItemIcon>
+              <ListItemText primary={context.text} />
             </ListItem>
           ))}
         </List>
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        Run
+        <Switch>
+          {routeContexts.map((context: RouteContext) => (
+            <Route key={context.path} path={context.path}>{context.component}</Route>
+          ))}
+        </Switch>
       </main>
     </div>
   );
 }
+
+export default withRouter(MainTemplate);
