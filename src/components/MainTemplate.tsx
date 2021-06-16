@@ -17,6 +17,7 @@ const drawerWidth = 240;
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     display: 'flex',
+    flex: 1,
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -72,7 +73,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     ...theme.mixins.toolbar,
   },
   content: {
-    flexGrow: 1,
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'column',
   },
 }));
 
