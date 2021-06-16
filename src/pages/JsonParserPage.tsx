@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Temp() {
+function JsonParserPage() {
   return (
     <div>
       Temp
@@ -8,4 +8,4 @@ function Temp() {
   );
 }
 
-export default Temp;
+export default JsonParserPage;

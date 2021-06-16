@@ -8,8 +8,9 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import { Link, Route, RouteComponentProps, Switch, withRouter } from 'react-router-dom';
-import { RouteContext } from '../App';
-import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
+import { Box, Divider, Drawer, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
+import { RouteContext } from '../routes/routes';
+import { Brightness4, Brightness7 } from '@material-ui/icons';
 
 const drawerWidth = 240;
 
@@ -24,6 +25,8 @@ const useStyles = makeStyles((theme: Theme) => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
   },
+  appBarInnerLeft: {},
+  appBarInnerRight: {},
   appBarShift: {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
@@ -74,13 +77,15 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 interface MainTemplateProps extends RouteComponentProps {
-  routeContexts: RouteContext[]
+  routes: RouteContext[];
+  changeTheme: () => void;
+  darkTheme: boolean;
 }
 
-function MainTemplate({ routeContexts, location }: MainTemplateProps) {
+function MainTemplate({ routes, location, changeTheme, darkTheme }: MainTemplateProps) {
   const currentRouteContext = useMemo(
-    () => routeContexts.find(({ path }) => path === location.pathname),
-    [routeContexts, location]
+    () => routes.find(({ path }) => path === location.pathname),
+    [routes, location]
   );
   const classes = useStyles();
   const [open, setOpen] = useState(true);
@@ -117,6 +122,14 @@ function MainTemplate({ routeContexts, location }: MainTemplateProps) {
           <Typography variant="h6" noWrap>
             TBD {currentRouteContext && `| ${currentRouteContext.text}`}
           </Typography>
+          <Box ml="auto">
+            <IconButton
+              color={'inherit'}
+              onClick={changeTheme}
+            >
+              {darkTheme ? <Brightness4 /> : <Brightness7 />}
+            </IconButton>
+          </Box>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -139,9 +152,9 @@ function MainTemplate({ routeContexts, location }: MainTemplateProps) {
         </div>
         <Divider />
         <List>
-          {routeContexts.map((context: RouteContext) => (
+          {routes.map((context: RouteContext) => (
             <ListItem button key={context.path} component={Link} to={context.path}>
-              <ListItemIcon>{context.icon}</ListItemIcon>
+              <ListItemIcon>{context.iconComponent}</ListItemIcon>
               <ListItemText primary={context.text} />
             </ListItem>
           ))}
@@ -150,8 +163,8 @@ function MainTemplate({ routeContexts, location }: MainTemplateProps) {
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <Switch>
-          {routeContexts.map((context: RouteContext) => (
-            <Route key={context.path} path={context.path}>{context.component}</Route>
+          {routes.map((context: RouteContext) => (
+            <Route key={context.path} path={context.path}>{context.pageComponent}</Route>
           ))}
         </Switch>
       </main>

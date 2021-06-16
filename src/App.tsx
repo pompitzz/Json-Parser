@@ -1,37 +1,27 @@
-import React from 'react';
-import { CssBaseline } from '@material-ui/core';
-import Temp from './pages/Temp';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import Temp2 from './pages/Temp2';
+import React, { useState } from 'react';
+import { createMuiTheme, CssBaseline, MuiThemeProvider } from '@material-ui/core';
 import MainTemplate from './components/MainTemplate';
+import routes from './routes/routes';
 
-export type RouteContext = {
-  text: string;
-  path: string;
-  icon: JSX.Element;
-  component: JSX.Element;
-}
-const routeContexts: RouteContext[] = [
-  {
-    text: 'Temp',
-    path: '/temp',
-    icon: <InboxIcon />,
-    component: <Temp />
-  },
-  {
-    text: 'Temp2',
-    path: '/temp2',
-    icon: <InboxIcon />,
-    component: <Temp2 />
-  }
-];
+const DARK_THEME = 'theme';
 
 function App() {
+  const [darkTheme, setDarkTheme] = useState(localStorage.getItem(DARK_THEME) === 'true');
+  const changeTheme = () => {
+    const themeToBeChanged = !darkTheme;
+    setDarkTheme(themeToBeChanged);
+    localStorage.setItem(DARK_THEME, themeToBeChanged.toString());
+  };
+  const theme = createMuiTheme({
+    palette: {
+      type: darkTheme ? 'dark' : 'light',
+    }
+  });
   return (
-    <div>
+    <MuiThemeProvider theme={theme}>
       <CssBaseline />
-      <MainTemplate routeContexts={routeContexts} />
-    </div>
+      <MainTemplate routes={routes} changeTheme={changeTheme} darkTheme={darkTheme} />
+    </MuiThemeProvider>
   );
 }
 
